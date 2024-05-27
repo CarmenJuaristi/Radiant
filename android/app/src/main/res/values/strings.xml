@@ -2,5 +2,5 @@
     <string name="app_name">Radiant</string>
     <string name="agent_image_description">getDisplayName()</string>
     <string name="agent_image_video">getImage()</string>
-    <string name="agent_name">getDisplayName()</string>
+    <string name="agent_name">getAgent()</string>
 </resources>

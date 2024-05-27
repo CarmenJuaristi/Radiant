@@ -1,10 +1,11 @@
 package com.juaristi.carmen.radiant;
 
-
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,12 +15,31 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import java.util.List;
+import com.juaristi.carmen.radiant.AgentsAdapter;
+import com.juaristi.carmen.radiant.AgentsAdapter.OnAgentClickListener;
 
 public class Fragment2 extends Fragment {
 
     private RecyclerView recyclerView;
     private AgentsAdapter agentsAdapter;
     private ApiService apiService;
+
+    // Interfaz para comunicarse con la actividad
+    public interface OnAgentSelectedListener {
+        void onAgentSelected(String agentName);
+    }
+
+    private OnAgentSelectedListener mListener;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (OnAgentSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnAgentSelectedListener");
+        }
+    }
 
     @Nullable
     @Override
@@ -53,21 +73,38 @@ public class Fragment2 extends Fragment {
                     // Configurar el adaptador con la lista de agentes
                     agentsAdapter = new AgentsAdapter(getContext(), agentsList);
                     recyclerView.setAdapter(agentsAdapter);
+
+                    // Manejo del evento de selección de agente
+                    agentsAdapter.setOnAgentClickListener(new AgentsAdapter.OnAgentClickListener() {
+                        @Override
+                        public void onAgentClick(Agent agent) {
+                            mListener.onAgentSelected(agent.getDisplayName());
+                        }
+
+
+                    });
                 } else {
                     // Manejo de respuesta fallida
+                    String errorMessage = "Error: ";
+                    if (response.errorBody() != null) {
+                        try {
+                            errorMessage += response.errorBody().string();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        errorMessage += "Response body is empty.";
+                    }
+                    Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AgentsResponse> call, Throwable t) {
                 // Manejo de errores
+                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         });
-    }
-    private List<String> obtenerVideosDeAgente(String agentName) {
-        // Implementa la lógica para obtener los videos de tu API
-        // Por ejemplo, hacer una llamada HTTP a tu endpoint y parsear la respuesta
-        return List.of("video1_url", "video2_url"); // Ejemplo estático
     }
 }

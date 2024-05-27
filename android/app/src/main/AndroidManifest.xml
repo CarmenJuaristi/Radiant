@@ -27,6 +27,8 @@
         <activity android:name=".RegisterActivity"
             android:exported="true"/>
         <activity android:name=".AgentDetailActivity" />
+        <activity android:name=".AgentInfoActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

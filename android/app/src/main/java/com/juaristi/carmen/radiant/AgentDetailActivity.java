@@ -1,14 +1,19 @@
 package com.juaristi.carmen.radiant;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import java.io.IOException;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import java.util.List;
 
 public class AgentDetailActivity extends AppCompatActivity {
 
@@ -35,6 +40,16 @@ public class AgentDetailActivity extends AppCompatActivity {
 
         // Carga de los videos del agente
         loadAgentVideos(agentName);
+
+        // Configuración del botón "Más info"
+        Button moreInfoButton = findViewById(R.id.more_info_button);
+        moreInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AgentDetailActivity.this, AgentInfoActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // Método para cargar los videos del agente desde la API
@@ -50,12 +65,28 @@ public class AgentDetailActivity extends AppCompatActivity {
                     videoAdapter = new VideoAdapter(AgentDetailActivity.this, videos);
                     // Configuración del adaptador en el RecyclerView
                     videosRecyclerView.setAdapter(videoAdapter);
+                } else {
+                    // Manejo de respuesta fallida
+                    String message;
+                    if (response.errorBody() != null) {
+                        try {
+                            message = response.errorBody().string();
+                        } catch (IOException e) {
+                            message = "Error en la respuesta.";
+                            e.printStackTrace();
+                        }
+                    } else {
+                        message = "Error en la respuesta.";
+                    }
+                    // Mostrar un Toast con el mensaje de error y el código de respuesta
+                    Toast.makeText(AgentDetailActivity.this, message + " Código: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<AgentVideo>> call, Throwable t) {
                 // Manejo del error en caso de fallo en la llamada
+                Toast.makeText(AgentDetailActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

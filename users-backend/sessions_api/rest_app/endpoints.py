@@ -64,7 +64,7 @@ def login(request):
 def agent_videos(request, agent_name):
 	if request.method == 'GET':
 		response = []
-		for x in UserVideos.objects.filter(agent_name=agent_name):
+		for x in UserVideo.objects.filter(agent_name=agent_name):
 			response.append(x.to_obj())
 		return JsonResponse(response, safe=False, status=200)
 	else:
@@ -73,7 +73,7 @@ def agent_videos(request, agent_name):
 def home_videos(request):
 	if request.method == 'GET':
 		response = []
-		for x in UserVideos.objects.all(): # Aquí se podría tunear para que en la /home se devolviera algo distinto a TODOS LOS VIDEOS
+		for x in UserVideo.objects.all(): # Aquí se podría tunear para que en la /home se devolviera algo distinto a TODOS LOS VIDEOS
 			response.append(x.to_obj())
 		return JsonResponse(response, safe=False, status=200)
 	else:
@@ -86,7 +86,7 @@ def user_videos(request):
 		return JsonResponse({'error': 'Not logged in. Missing Session-Token header?'}, status=401)
 	if request.method == 'GET':
 		response = []
-		for x in UserVideos.objects.filter(user=user):
+		for x in UserVideo.objects.filter(user=user):
 			response.append(x.to_obj())
 		return JsonResponse(response, safe=False, status=200)
 	elif request.method == 'POST':

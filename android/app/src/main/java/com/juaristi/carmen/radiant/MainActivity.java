@@ -1,19 +1,17 @@
 package com.juaristi.carmen.radiant;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
-import android.content.Context;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Button;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  implements Fragment2.OnAgentSelectedListener{
     private Context context = this;
 
     @Override
@@ -55,5 +53,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+    @Override
+    public void onAgentSelected(String agentName) {
+        // Inicia la actividad AgentDetailActivity con el nombre del agente seleccionado
+        Intent intent = new Intent(this, AgentDetailActivity.class);
+        intent.putExtra("AGENT_NAME", agentName);
+        startActivity(intent);
     }
 }

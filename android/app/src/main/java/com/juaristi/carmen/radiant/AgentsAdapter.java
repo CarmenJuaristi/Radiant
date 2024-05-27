@@ -23,6 +23,8 @@ public class AgentsAdapter extends RecyclerView.Adapter<AgentsAdapter.AgentViewH
     private List<Agent> agentsList;
     // Servicio API para realizar las solicitudes
     private ApiService apiService;
+    // Listener para manejar los clics en los elementos del adaptador
+    private OnAgentClickListener onAgentClickListener;
 
     // Constructor que inicializa el contexto, la lista de agentes y el servicio API
     public AgentsAdapter(Context context, List<Agent> agentsList) {
@@ -31,7 +33,7 @@ public class AgentsAdapter extends RecyclerView.Adapter<AgentsAdapter.AgentViewH
         this.apiService = RetrofitClient.getClient("https://valorant-api.com/").create(ApiService.class);
     }
 
-    // Método para inflar el layout del item y crear el ViewHolder
+    // Método que crea un nuevo ViewHolder al inflar el layout del item del agente
     @NonNull
     @Override
     public AgentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -39,7 +41,7 @@ public class AgentsAdapter extends RecyclerView.Adapter<AgentsAdapter.AgentViewH
         return new AgentViewHolder(view);
     }
 
-    // Método para enlazar los datos del agente con las vistas del ViewHolder
+    // Método que enlaza los datos del agente con las vistas del ViewHolder
     @Override
     public void onBindViewHolder(@NonNull AgentViewHolder holder, int position) {
         // Obtención del agente de la posición actual
@@ -72,17 +74,15 @@ public class AgentsAdapter extends RecyclerView.Adapter<AgentsAdapter.AgentViewH
 
         // Configuración del click listener para el item del agente
         holder.itemView.setOnClickListener(v -> {
-            // Creación del intent para abrir AgentDetailActivity
-            Intent intent = new Intent(context, AgentDetailActivity.class);
-            // Paso de datos del agente a la actividad de detalle
-            intent.putExtra("AGENT_NAME", agent.getDisplayName());
-            intent.putExtra("AGENT_IMAGE", agent.getDisplayIconSmall());
-            // Inicio de la actividad de detalle
-            context.startActivity(intent);
+            // Verificación de que el listener no sea nulo
+            if (onAgentClickListener != null) {
+                // Llamada al método onAgentClick del listener pasando el agente como parámetro
+                onAgentClickListener.onAgentClick(agent);
+            }
         });
     }
 
-    // Método para obtener la cantidad de items en la lista
+    // Método que devuelve la cantidad de items en la lista de agentes
     @Override
     public int getItemCount() {
         return agentsList.size();
@@ -103,5 +103,15 @@ public class AgentsAdapter extends RecyclerView.Adapter<AgentsAdapter.AgentViewH
             nameTextView = itemView.findViewById(R.id.agent_name);
             videosRecyclerView = itemView.findViewById(R.id.videos_recycler_view);
         }
+    }
+
+    // Interfaz para manejar los clics en los elementos del adaptador
+    public interface OnAgentClickListener {
+        void onAgentClick(Agent agent);
+    }
+
+    // Método para establecer el listener para manejar los clics en los elementos del adaptador
+    public void setOnAgentClickListener(OnAgentClickListener listener) {
+        this.onAgentClickListener = listener;
     }
 }

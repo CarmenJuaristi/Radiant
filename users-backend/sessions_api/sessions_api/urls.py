@@ -14,12 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
+from django.contrib import admin
 from rest_app import endpoints
 
 urlpatterns = [
+    path('admin/',admin.site.urls),
     path('user/videos', endpoints.user_videos),
-    path('agents/<agent_name>/videos', endpoints.user_videos),
-    path('home/videos', endpoints.user_videos),
+    path('agents/<agent_name>/videos', endpoints.agent_videos),
+    path('home/videos', endpoints.home_videos),
     path('users', endpoints.register),
     path('sessions', endpoints.login),
 ]
