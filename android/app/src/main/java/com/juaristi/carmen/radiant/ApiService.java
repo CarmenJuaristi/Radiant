@@ -14,8 +14,9 @@ public interface ApiService {
     // Método GET para obtener la lista de agentes
     @GET("v1/agents")
     Call<AgentsResponse> getAgents(); // Retorna una llamada asíncrona que espera la respuesta de tipo AgentsResponse
-    @GET("agent_videos/{agent_name}")
-    Call<List<AgentVideo>> getAgentVideos(@Path("agent_name") String agentName);
+
+    @GET("v1/weapons")
+    Call<WeaponsResponse> getWeapons();
 }
 
 

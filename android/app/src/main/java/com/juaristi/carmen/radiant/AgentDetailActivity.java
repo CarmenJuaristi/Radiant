@@ -21,7 +21,7 @@ public class AgentDetailActivity extends AppCompatActivity {
     private RecyclerView videosRecyclerView;
     private VideoAdapter videoAdapter;
     // Declaración del servicio API
-    private ApiService apiService;
+    private ApiServiceVideos apiService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,12 +31,13 @@ public class AgentDetailActivity extends AppCompatActivity {
         // Inicialización del RecyclerView y configuración del layout manager para disposición horizontal
         videosRecyclerView = findViewById(R.id.videos_recycler_view);
         videosRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
-        // Inicialización del servicio API usando Retrofit
-        apiService = RetrofitClient.getClient("https://valorant-api.com/").create(ApiService.class);
-
         // Obtención del nombre del agente desde el intent
         String agentName = getIntent().getStringExtra("AGENT_NAME");
+        // Inicialización del servicio API usando Retrofit
+        apiService = RetrofitClient.getClient("http://10.0.2.2:8000/").create(ApiServiceVideos.class);
+
+
+
 
         // Carga de los videos del agente
         loadAgentVideos(agentName);

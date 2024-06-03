@@ -52,25 +52,7 @@ public class AgentsAdapter extends RecyclerView.Adapter<AgentsAdapter.AgentViewH
         holder.nameTextView.setText(agent.getDisplayName());
 
         // Realizar la solicitud para obtener los videos del agente
-        apiService.getAgentVideos(agent.getDisplayName()).enqueue(new Callback<List<AgentVideo>>() {
-            @Override
-            public void onResponse(Call<List<AgentVideo>> call, Response<List<AgentVideo>> response) {
-                // Verificación de que la respuesta fue exitosa y no es nula
-                if (response.isSuccessful() && response.body() != null) {
-                    // Obtención de la lista de videos
-                    List<AgentVideo> videos = response.body();
-                    // Creación y configuración del adaptador de videos
-                    VideoAdapter videoAdapter = new VideoAdapter(context, videos);
-                    holder.videosRecyclerView.setAdapter(videoAdapter);
-                    holder.videosRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                }
-            }
 
-            @Override
-            public void onFailure(Call<List<AgentVideo>> call, Throwable t) {
-                // Manejo de errores en la solicitud
-            }
-        });
 
         // Configuración del click listener para el item del agente
         holder.itemView.setOnClickListener(v -> {

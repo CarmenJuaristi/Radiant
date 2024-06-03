@@ -2,6 +2,7 @@ package com.juaristi.carmen.radiant;
 
 public class AgentVideo {
     private String image;
+    private String title;
     private String video;
     private String uploader;
     private String agent;
@@ -9,10 +10,11 @@ public class AgentVideo {
     public String getImage() {
         return image;
     }
-
     public void setImage(String image) {
         this.image = image;
     }
+    public String getTitle(){return title;}
+    public void setTitle(String title){this.title = title;}
 
     public String getVideo() {
         return video;

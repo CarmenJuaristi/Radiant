@@ -3,4 +3,8 @@
     <string name="agent_image_description">getDisplayName()</string>
     <string name="agent_image_video">getImage()</string>
     <string name="agent_name">getAgent()</string>
+    <string name="username">getUploader()</string>
+    <string name="title">getTitle()</string>
+    <string name="weapon_icon">getDisplayIcon()</string>
+    <string name="weapon_name">getDisplayName()</string>
 </resources>
