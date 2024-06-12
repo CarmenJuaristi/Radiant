@@ -1,6 +1,7 @@
 package com.juaristi.carmen.radiant;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -63,7 +64,17 @@ public class AgentDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     List<AgentVideo> videos = response.body();
                     // Inicialización del adaptador con los videos obtenidos
-                    videoAdapter = new VideoAdapter(AgentDetailActivity.this, videos, null);
+                    videoAdapter = new VideoAdapter(AgentDetailActivity.this, videos, new VideoAdapter.OnVideoClickListener() {
+                        @Override
+                        public void onVideoClick(AgentVideo video) {
+                            Intent intent = new Intent (Intent.ACTION_VIEW);
+                            String url = video.getVideo();
+                            intent.setData(Uri.parse(url));
+                            startActivity(intent);
+
+
+                        }
+                    });
                     // Configuración del adaptador en el RecyclerView
                     videosRecyclerView.setAdapter(videoAdapter);
                 } else {

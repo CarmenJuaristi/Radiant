@@ -2,6 +2,7 @@ package com.juaristi.carmen.radiant;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.juaristi.carmen.radiant.AgentVideo;
-import com.juaristi.carmen.radiant.ApiServiceVideos;
-import com.juaristi.carmen.radiant.RetrofitClient;
-import com.juaristi.carmen.radiant.VideoAdapter;
-import com.juaristi.carmen.radiant.VideoPlayerActivity;
 
 import java.util.List;
 
@@ -38,7 +33,7 @@ public class Fragment1 extends Fragment{
 
 
     public interface OnVideoSelectedListener{
-        void onVideoSelectedListener(String videoName);
+        void onVideoSelected(String videoName);
     }
     private Fragment1.OnVideoSelectedListener mListener;
     @Override
@@ -75,7 +70,16 @@ public class Fragment1 extends Fragment{
                 if (response.isSuccessful() && response.body() != null) {
                     List<AgentVideo> agentVideoList = response.body();
                     // Configuramos el adaptador con la lista de videos
-                    videoAdapter = new VideoAdapter(getContext(), agentVideoList, Fragment1.this);
+                    videoAdapter = new VideoAdapter(getContext(), agentVideoList, new OnVideoClickListener() {
+                        @Override
+                        public void onVideoClick(AgentVideo video) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            String url = video.getVideo();
+                            intent.setData(Uri.parse(url));
+                            startActivity(intent);
+
+                        }
+                    });
                     videosrecyclerView.setAdapter(videoAdapter);
                 } else {
                     // Manejamos en caso de respuesta fallida
@@ -100,12 +104,5 @@ public class Fragment1 extends Fragment{
         });
     }
 
-    // Implementación del método de la interfaz OnVideoClickListener
-    @Override
-    public void onVideoClick(AgentVideo video) {
-        // Manejar el clic en el video para reproducirlo
-        Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
-        intent.putExtra("VIDEO_URL", video.getVideo());
-        startActivity(intent);
-    }
+
 }
