@@ -12,12 +12,16 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:contentDescription="@string/weapon_name" />
+
     <ImageView
-        android:id="@+id/weapon_detail_image"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="16dp" />
+        android:id="@+id/monigote"
+        android:layout_width="96dp"
+        android:layout_height="201dp"
+        android:src="@drawable/monigote"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </LinearLayout>

@@ -63,7 +63,7 @@ public class AgentDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     List<AgentVideo> videos = response.body();
                     // Inicialización del adaptador con los videos obtenidos
-                    videoAdapter = new VideoAdapter(AgentDetailActivity.this, videos);
+                    videoAdapter = new VideoAdapter(AgentDetailActivity.this, videos, null);
                     // Configuración del adaptador en el RecyclerView
                     videosRecyclerView.setAdapter(videoAdapter);
                 } else {

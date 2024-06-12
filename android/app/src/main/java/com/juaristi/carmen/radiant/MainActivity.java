@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity  implements Fragment2.OnAgentSelectedListener{
+public class MainActivity extends AppCompatActivity  implements Fragment2.OnAgentSelectedListener, Fragment3.onWeaponSelectedListener, Fragment1.OnVideoSelectedListener {
     private Context context = this;
 
     @Override
@@ -22,7 +25,8 @@ public class MainActivity extends AppCompatActivity  implements Fragment2.OnAgen
         Fragment myFragment2 = new Fragment2();
         Fragment myFragment3 = new Fragment3();
         Fragment myFragment4 = new Fragment4();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new Fragment1()).commit();
+
+
         BottomNavigationView bar = findViewById(R.id.bottomNavigation);
         bar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -61,4 +65,16 @@ public class MainActivity extends AppCompatActivity  implements Fragment2.OnAgen
         intent.putExtra("AGENT_NAME", agentName);
         startActivity(intent);
     }
+    @Override
+    public void onWeaponSelected(String weaponName) {
+        // Manejar la selección del arma, por ejemplo, mostrar un Toast
+        Toast.makeText(this, "Selected weapon: " + weaponName, Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public void onVideoSelected(String videoName) {
+        // Manejar la selección del video, por ejemplo, mostrar un Toast
+        Toast.makeText(this, "Selected video: " + videoName, Toast.LENGTH_SHORT).show();
+    }
+
+
 }

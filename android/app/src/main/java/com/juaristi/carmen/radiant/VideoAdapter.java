@@ -1,79 +1,70 @@
 package com.juaristi.carmen.radiant;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
+
 import java.util.List;
 
-public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
-
-    // Contexto de la aplicación y lista de videos
+public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> {
     private Context context;
-    private List<AgentVideo> videos;
+    private List<AgentVideo> videoList;
+    private OnVideoClickListener mListener;
 
-    // Constructor que inicializa el contexto y la lista de videos
-    public VideoAdapter(Context context, List<AgentVideo> videos) {
-        this.context = context;
-        this.videos = videos;
+    public interface OnVideoClickListener {
+        void onVideoClick(AgentVideo video);
     }
 
-    // Método para inflar el layout del item y crear el ViewHolder
+    public VideoAdapter(Context context, List<AgentVideo> videoList, OnVideoClickListener listener) {
+        this.context = context;
+        this.videoList = videoList;
+        this.mListener = listener;
+    }
+
     @NonNull
     @Override
-    public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflar el layout para el item del video
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.video_item, parent, false);
-        return new VideoViewHolder(view);
+        return new ViewHolder(view);
     }
 
-    // Método para enlazar los datos del video con las vistas del ViewHolder
     @Override
-    public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
-        // Obtención del video de la posición actual
-        AgentVideo video = videos.get(position);
-        // Configuración del texto del video
-        holder.videoTextView.setText("Video " + (position + 1));
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        AgentVideo video = videoList.get(position);
+        holder.videoTitle.setText(video.getTitle());
+        Glide.with(context)
+                .load(video.getImage())
+                .into(holder.videoThumbnail);
 
-        // Utilizar Glide para cargar la imagen desde la URL
-        Glide.with(context).load(video.getImage()).into(holder.videoThumbnail);
-
-        // Configuración del click listener para abrir el video en el navegador
-        holder.itemView.setOnClickListener(v -> {
-            // Creación del intent para abrir el video en el navegador
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(video.getVideo()));
-            // Inicio de la actividad del navegador
-            context.startActivity(intent);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onVideoClick(video);
+            }
         });
     }
 
-    // Método para obtener la cantidad de items en la lista
     @Override
     public int getItemCount() {
-        return videos.size();
+        return videoList.size();
     }
 
-    // Clase ViewHolder para representar cada item de video
-    public static class VideoViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView videoTitle;
+        public ImageView videoThumbnail;
 
-        // Declaración de las vistas del item
-        ImageView videoThumbnail;
-        TextView videoTextView;
-
-        // Constructor que inicializa las vistas del item
-        public VideoViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
+            videoTitle = itemView.findViewById(R.id.video_text);
             videoThumbnail = itemView.findViewById(R.id.video_thumbnail);
-            videoTextView = itemView.findViewById(R.id.video_text);
         }
     }
 }
-
-
