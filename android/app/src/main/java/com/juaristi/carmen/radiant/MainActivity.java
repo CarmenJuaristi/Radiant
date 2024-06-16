@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity  implements Fragment2.OnAgentSelectedListener, Fragment3.onWeaponSelectedListener, Fragment1.OnVideoSelectedListener {
+public class MainActivity extends AppCompatActivity  implements Fragment2.OnAgentSelectedListener, Fragment3.onWeaponSelectedListener, Fragment1.OnVideoSelectedListener, Fragment4.OnVideoSelected2Listener {
     private Context context = this;
 
     @Override
@@ -66,15 +65,31 @@ public class MainActivity extends AppCompatActivity  implements Fragment2.OnAgen
         startActivity(intent);
     }
     @Override
-    public void onWeaponSelected(String weaponName) {
-        // Manejar la selección del arma, por ejemplo, mostrar un Toast
-        Toast.makeText(this, "Selected weapon: " + weaponName, Toast.LENGTH_SHORT).show();
+    public void onWeaponSelected(String uuid) {
+        // Iniciamos la actividad WeaponDetailActivity
+       Intent intent = new Intent(this, WeaponDetailActivity.class);
+       intent.putExtra("UUID", uuid );
+       startActivity(intent);
     }
     @Override
     public void onVideoSelected(String videoName) {
         // Manejar la selección del video, por ejemplo, mostrar un Toast
         Toast.makeText(this, "Selected video: " + videoName, Toast.LENGTH_SHORT).show();
     }
+    @Override
+    public void onVideoSelected2(String videoUrl, String imageUrl, String agentName) {
+        // Manejar la selección del video, por ejemplo, mostrar un Toast
+        Toast.makeText(this, "Selected video: " + videoUrl + ", image: " + imageUrl + ", agent: " + agentName, Toast.LENGTH_SHORT).show();
+    }
 
 
+    @Override
+    public void onVideoSelected2(String videoName) {
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
 }

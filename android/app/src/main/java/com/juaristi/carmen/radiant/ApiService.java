@@ -17,6 +17,9 @@ public interface ApiService {
 
     @GET("v1/weapons")
     Call<WeaponsResponse> getWeapons();
+
+    @GET("v1/weapons/{uuid}")
+    Call<WeaponsDetailResponse> getWeaponsDetail(@Path("uuid")String uuid);
 }
 
 

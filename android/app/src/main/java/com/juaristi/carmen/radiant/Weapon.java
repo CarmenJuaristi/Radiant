@@ -4,6 +4,16 @@ public class Weapon {
     private String uuid;
     private String displayName;
     private String displayIcon;
+    private WeaponStats weaponStats;
+
+    public void setWeaponStats(WeaponStats weaponStats) {
+        this.weaponStats = weaponStats;
+    }
+
+    public WeaponStats getWeaponStats() {
+        return weaponStats;
+    }
+
     private String reloadTimeSeconds;
     private String runSpeedMultiplier;
     private String fireRate;

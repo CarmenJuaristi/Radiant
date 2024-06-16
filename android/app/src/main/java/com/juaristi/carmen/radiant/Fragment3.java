@@ -82,7 +82,7 @@ public class Fragment3 extends Fragment {
                     weaponsAdapter.setOnWeaponClickListener(new WeaponsAdapter.OnWeaponClickListener(){
                         @Override
                         public void onWeaponClick(Weapon weapon) {
-                            mListener.onWeaponSelected(weapon.getDisplayName());
+                            mListener.onWeaponSelected(weapon.getUuid());
                         }
                     });
                 }else{
